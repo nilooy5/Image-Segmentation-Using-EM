@@ -1,0 +1,26 @@
+The images were segmented using EM Maximization, which assumes that we know the 
+no. of segments in the image apriori. The segmentation for each image was done for different assumptions of the no. of segments in the image.
+
+It was observed that the segmentation of coins image, with the assumption of two segments converged within the first 5 iterations.This was expected 
+as the coin image had quite consistent differentiation in terms of color and contrast between the white background and the bronze coins.
+The assumption of two segments thus facilitated quick segmentation convergence.
+
+The jump image, assuming 2 segments was segmented into the foreground ice and background sky quite satisfactorily, the ice in green and sky in red (in segmented image).
+The jump image,with the assumption of 3 segments, converged at the 16th iteration.The segmentation results can be explained by the variation in the color
+intensities of the original image. Very light colored portions(ice in the original image,white colored) was perfectly segmented from the background and the person.
+The light and dark colors of the background were unfortunately segmented into 2 eventhough it was the same sky. Dark portions of the person appeared segmented with the
+dark portions of the sky, while light colored portions of the person appeared segmented with the light colored part of the sky.
+
+The tiger image was the most difficult task to segment provided the variation in colors within each entity(tiger stripes, Variation in grass color,etc).
+Nevertheless the entities tiger,grass,ground and water was segmented,with the presence of noise in each segmented entity.
+
+The Image Segmentation implemented above is by applying EM Maximization on a mutli modal gaussian distribution, assuming we know the no of modes in the underlying distribution.
+We randomly initialize random weights to the modes and the means of each mode. For each pixel, we then find the probablity it belongs to each of the gaussians. This is done in the E-Step.
+We then update the mean and weight of each gaussian, utilizing the new probabilities of each pixel belonging to a gaussian. 
+This constitutes the M-Step. The repetition of the above two steps till convergence results in each gaussian approximating a segment in the image.
+We then use kmeans to cluster the pixel intensities, assuming the no of clusters to be the no of segments assumed to be present in the image.
+The label of each pixel is updated to be the cluster centroid label and are colored same.
+We finally clip the pixel intensities to be in range 0-1 and apply a gaussian smoothening filter with standard deviation =2 to obtain the final segmented
+image.
+
+Note : The converged segmented images for each category,for different assumptions of segments is saved as results.png in the folder.
